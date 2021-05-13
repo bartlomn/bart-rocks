@@ -12,8 +12,8 @@ const bootstrap = async () => {
     ]);
     const { hydrate, render } = ReactDom;
     const { StrictMode } = React;
-    // hydrate if pre-rendered by react-snap
     if (rootElement?.hasChildNodes()) {
+        // hydrate if pre-rendered by react-snap
         hydrate(
             <StrictMode>
                 <AppWrapper>
@@ -23,6 +23,7 @@ const bootstrap = async () => {
             rootElement,
         );
     } else {
+        // otherwise regular render
         render(
             <StrictMode>
                 <AppWrapper>

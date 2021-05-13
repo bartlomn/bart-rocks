@@ -35,6 +35,7 @@
         "@types/node": "^12.0.0",
         "@types/react": "^17.0.0",
         "@types/react-dom": "^17.0.0",
+        "@types/three": "^0.128.0",
         "@typescript-eslint/eslint-plugin": "^4.23.0",
         "@typescript-eslint/parser": "^4.23.0",
         "customize-cra": "^1.0.0",
@@ -43,6 +44,7 @@
         "eslint-plugin-prefer-arrow": "^1.2.3",
         "eslint-plugin-prettier": "^3.4.0",
         "eslint-plugin-react": "^7.23.2",
+        "gsap": "^3.6.1",
         "modern-normalize": "^1.1.0",
         "node-sass": "^5.0.0",
         "parse5": "^6.0.1",
@@ -52,6 +54,7 @@
         "react-dom": "^17.0.2",
         "react-scripts": "4.0.3",
         "react-snap": "^1.23.0",
+        "three": "^0.128.0",
         "typescript": "^4.1.2"
     },
     "reactSnap": {
