@@ -1,7 +1,9 @@
+// we want global styles to be available from the very beggining
 import './styles/global.scss';
 
 const rootElement = document.getElementById('root');
 const bootstrap = async () => {
+    // dynamic import of react and app dependencies
     const [ReactDom, React, App, AppWrapper] = await Promise.all([
         import('react-dom'),
         import('react'),
@@ -10,6 +12,7 @@ const bootstrap = async () => {
     ]);
     const { hydrate, render } = ReactDom;
     const { StrictMode } = React;
+    // hydrate if pre-rendered by react-snap
     if (rootElement?.hasChildNodes()) {
         hydrate(
             <StrictMode>
@@ -32,8 +35,10 @@ const bootstrap = async () => {
 };
 
 if (navigator.userAgent === 'ReactSnap' || process.env.NODE_ENV === 'development') {
+    // if pre-rendering or in dev mode, render right away
     bootstrap();
 } else {
+    // otherwise wait for idle state
     window.requestIdleCallback(bootstrap);
 }
 

@@ -15,6 +15,7 @@ const App = (): JSX.Element => {
                     Learn React
                 </a>
             </header>
+            <h1>Perf Test</h1>
         </div>
     );
 };

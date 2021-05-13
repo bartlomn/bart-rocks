@@ -5,7 +5,7 @@
     "scripts": {
         "start": "react-app-rewired start",
         "build": "react-app-rewired build",
-        "postbuild": "react-snap",
+        "postbuild": "react-snap && node scripts/removeHeaderScripts.js",
         "test": "react-app-rewired test",
         "lint": "eslint src"
     },
@@ -45,6 +45,7 @@
         "eslint-plugin-react": "^7.23.2",
         "modern-normalize": "^1.1.0",
         "node-sass": "^5.0.0",
+        "parse5": "^6.0.1",
         "prettier": "^2.3.0",
         "react": "^17.0.2",
         "react-app-rewired": "^2.1.8",
