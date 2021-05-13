@@ -40,7 +40,7 @@ if (navigator.userAgent === 'ReactSnap' || process.env.NODE_ENV === 'development
     bootstrap();
 } else {
     // otherwise wait for idle state
-    window.requestIdleCallback(bootstrap);
+    setTimeout(bootstrap, 500);
 }
 
 export {};

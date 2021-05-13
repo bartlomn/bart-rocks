@@ -1,11 +1,13 @@
 import React, { Fragment } from 'react';
 
+import styles from './Headings.module.scss';
+
 const Headings = (): JSX.Element => {
     return (
         <Fragment>
-            <h1>Bart Nowak.</h1>
-            <h2>Hands-on contributor. Technology strategist. Servant team leader.</h2>
-            <header>
+            <h1 className={styles.h1}>Bart Nowak.</h1>
+            <h2 className={styles.h2}>Hands-on contributor. Technology strategist. Servant team leader.</h2>
+            <header className={styles.header}>
                 It was in the year of 2000 that I had been first asked to build a website. Ever since then, I have been
                 delivering digital products and services across a multitude of domains.
             </header>
