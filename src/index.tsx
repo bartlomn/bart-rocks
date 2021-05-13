@@ -1,17 +1,40 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './styles/global.scss';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const rootElement = document.getElementById('root');
+const bootstrap = async () => {
+    const [ReactDom, React, App, AppWrapper] = await Promise.all([
+        import('react-dom'),
+        import('react'),
+        import('./App').then((module) => module.default),
+        import('./AppWrapper').then((module) => module.default),
+    ]);
+    const { hydrate, render } = ReactDom;
+    const { StrictMode } = React;
+    if (rootElement?.hasChildNodes()) {
+        hydrate(
+            <StrictMode>
+                <AppWrapper>
+                    <App />
+                </AppWrapper>
+            </StrictMode>,
+            rootElement,
+        );
+    } else {
+        render(
+            <StrictMode>
+                <AppWrapper>
+                    <App />
+                </AppWrapper>
+            </StrictMode>,
+            rootElement,
+        );
+    }
+};
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+if (navigator.userAgent === 'ReactSnap' || process.env.NODE_ENV === 'development') {
+    bootstrap();
+} else {
+    window.requestIdleCallback(bootstrap);
+}
+
+export {};
