@@ -2,4 +2,7 @@
     width: 100vw;
     height: 100vh;
     background: radial-gradient(at bottom right, #2BC0E4, #EAECC6);
+    position: absolute;
+    z-index: -1000;
+    // background: radial-gradient(at bottom right, #16A085, #F4D03F);
 }

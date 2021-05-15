@@ -72,7 +72,6 @@ export const initRender = (
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
-        // renderer.render(scene, camera);
     };
     const resizeHandler = throttle(10, onResize);
     const render = () => {
