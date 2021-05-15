@@ -39,8 +39,8 @@ if (navigator.userAgent === 'ReactSnap' || process.env.NODE_ENV === 'development
     // if pre-rendering or in dev mode, render right away
     bootstrap();
 } else {
-    // otherwise wait for idle state
-    setTimeout(bootstrap, 500);
+    // otherwise wait for a bit
+    setTimeout(bootstrap, 2000);
 }
 
 export {};

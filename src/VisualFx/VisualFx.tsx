@@ -172,7 +172,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
 
     useEffect(() => {
         if (loadComplete && !isInitialised) {
-            setTimeout(initCallback, 2000);
+            requestAnimationFrame(initCallback);
             setInitialised(true);
         }
     }, [loadComplete, isInitialised]);
