@@ -21,7 +21,6 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             import('./shaders/shader.frag').then(module => module.default),
             import('./shaders/shader.vert').then(module => module.default),
         ]);
-        debugger
         const {
             BufferAttribute,
             BufferGeometry,
@@ -38,6 +37,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             TextureLoader,
             WebGLRenderer,
             Vector2,
+            VertexColors,
         } = Three;
         const { initRender, moveDot } = Utils;
 
@@ -127,7 +127,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             color: 0xffffff,
             transparent: true,
             opacity: 0.3,
-            vertexColors: true,
+            vertexColors: VertexColors,
         });
         for (let i = dotsGeometry.vertices.length - 1; i >= 0; i--) {
             const vector: InstanceType<typeof CustomVector> = dotsGeometry.vertices[i] as InstanceType<
@@ -165,7 +165,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
 
     useEffect(() => {
         if (loadComplete && !isInitialised) {
-            setTimeout(initCallback, 2500);
+            setTimeout(initCallback, 2000);
             setInitialised(true);
         }
     }, [loadComplete, isInitialised]);
