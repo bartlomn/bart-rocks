@@ -8,8 +8,15 @@ type AppWrapperProps = PropsWithChildren<Record<string, unknown>>;
 const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const [loadCompleted, setLoadCompleted] = useState<boolean>(false);
     const applyReadyState = useCallback(() => {
-        document.querySelector('#root')?.classList.add('loadComplete');
-        setLoadCompleted(true);
+        if (process.env.NODE_ENV === 'development') {
+            setTimeout(() => {
+                document.querySelector('#root')?.classList.add('loadComplete');
+                setLoadCompleted(true);
+            }, 3000);
+        } else {
+            document.querySelector('#root')?.classList.add('loadComplete');
+            setLoadCompleted(true);
+        }
     }, []);
     const readyStateChangeHandler = useCallback(() => {
         if (document.readyState === 'complete') {
@@ -17,6 +24,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
         }
     }, []);
     useEffect(() => {
+        // when pre-rendering ssg snapshot, we want pristine state
         if (navigator.userAgent === 'ReactSnap') return;
         if (document.readyState === 'complete') {
             applyReadyState();
@@ -39,12 +47,22 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                     zIndex: 1000,
                 }}
             >
-                <span style={{ position: 'relative', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
+                <span
+                    style={{
+                        position: 'relative',
+                        left: '50%',
+                        top: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        color: 'gray',
+                    }}
+                >
                     ...
                 </span>
             </div>
-            {children}
-            <VisualFx loadComplete={loadCompleted} />
+            <div className={styles.children}>
+                {children}
+                <VisualFx loadComplete={loadCompleted} />
+            </div>
         </Fragment>
     );
 };
