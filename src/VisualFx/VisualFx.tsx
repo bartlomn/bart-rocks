@@ -18,8 +18,8 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             import('three'),
             import('./cutomVector').then((module) => module.default),
             import('./utils'),
-            import('./shaders/shader.frag').then(module => module.default),
-            import('./shaders/shader.vert').then(module => module.default),
+            import('./shaders/shader.frag').then((module) => module.default),
+            import('./shaders/shader.vert').then((module) => module.default),
         ]);
         const {
             BufferAttribute,
@@ -126,7 +126,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         const segmentsMat = new LineBasicMaterial({
             color: 0xffffff,
             transparent: true,
-            opacity: 0.3,
+            opacity: 0.6,
             vertexColors: VertexColors,
         });
         for (let i = dotsGeometry.vertices.length - 1; i >= 0; i--) {
@@ -149,7 +149,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         const mouse = new Vector2(-100, -100);
 
         // kick off rendering
-        initRender(
+        const { resizeHandler } = initRender(
             dotsGeometry,
             segmentsGeom,
             raycaster,
@@ -160,7 +160,14 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             attributePositions,
             renderer,
             scene,
+            canvas,
         );
+
+        window.addEventListener('resize', resizeHandler);
+
+        return () => {
+            window.removeEventListener('resize', resizeHandler);
+        };
     }, [canvasRef.current]);
 
     useEffect(() => {

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { BufferAttribute, Geometry, PerspectiveCamera, Points, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
-import { Elastic, Power0, TimelineMax, TweenMax } from 'gsap';
+import { Elastic, Power0, Power2, TimelineMax, TweenMax } from 'gsap';
+import { throttle } from 'throttle-debounce';
 
 import CustomVector from './cutomVector';
 
@@ -19,40 +20,33 @@ export const moveDot = (vector: CustomVector, index: number, attributePositions:
         delay: -Math.random() * 3,
         ease: Power0.easeInOut,
         onUpdate: () => {
-            // attributePositions.setXYZ(index * 3, vector.x, vector.y, vector.z);
-            // @ts-expect-error test
-            attributePositions.array[index * 3] = vector.x;
-            // @ts-expect-error test
-            attributePositions.array[index * 3 + 1] = vector.y;
-            // @ts-expect-error test
-            attributePositions.array[index * 3 + 2] = vector.z;
+            attributePositions.setXYZ(index * 3, vector.x, vector.y, vector.z);
         },
     });
 };
 
 export const onDotHover = (index: number, dotsGeometry: Geometry, attributeSizes: BufferAttribute): void => {
     (dotsGeometry.vertices[index] as CustomVector).tl = new TimelineMax();
-    (dotsGeometry.vertices[index] as CustomVector).tl!.to(dotsGeometry.vertices[index], 1, {
-        scaleX: 10,
-        // duration: 1,
-        ease: Elastic.easeOut.config(2, 0.2),
-        onUpdate: () => {
-            // attributeSizes.set([(dotsGeometry.vertices[index] as CustomVector).scaleX!], index);
-            // @ts-expect-error test
-            attributeSizes.array[index] = (dotsGeometry.vertices[index] as CustomVector).scaleX;
+    (dotsGeometry.vertices[index] as CustomVector).tl!.to(
+        dotsGeometry.vertices[index],
+        1,
+        {
+            scaleX: 10,
+            ease: Elastic.easeOut.config(2, 0.2),
+            onUpdate: () => {
+                attributeSizes.set([(dotsGeometry.vertices[index] as CustomVector).scaleX!], index);
+            },
         },
-    }, 5);
+        5,
+    );
 };
 
 export const mouseOut = (index: number, dotsGeometry: Geometry, attributeSizes: BufferAttribute): void => {
-    (dotsGeometry.vertices[index] as CustomVector).tl!.to(dotsGeometry.vertices[index], .4, {
+    (dotsGeometry.vertices[index] as CustomVector).tl!.to(dotsGeometry.vertices[index], 0.4, {
         scaleX: 5,
-        // duration: 0.4,
         ease: Power2.easeOut,
         onUpdate: () => {
-            // attributeSizes.set([(dotsGeometry.vertices[index] as CustomVector).scaleX!], index);
-            // @ts-expect-error test
-            attributeSizes.array[index] = (dotsGeometry.vertices[index] as CustomVector).scaleX;
+            attributeSizes.set([(dotsGeometry.vertices[index] as CustomVector).scaleX!], index);
         },
     });
 };
@@ -68,7 +62,19 @@ export const initRender = (
     attributePositions: BufferAttribute,
     renderer: WebGLRenderer,
     scene: Scene,
-): void => {
+    canvas: HTMLCanvasElement,
+): { resizeHandler: () => void } => {
+    const onResize = () => {
+        canvas.style.width = '';
+        canvas.style.height = '';
+        const width = canvas.offsetWidth;
+        const height = canvas.offsetHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+        // renderer.render(scene, camera);
+    };
+    const resizeHandler = throttle(10, onResize);
     const render = () => {
         let i;
         dotsGeometry.verticesNeedUpdate = true;
@@ -95,6 +101,10 @@ export const initRender = (
         attributeSizes.needsUpdate = true;
         attributePositions.needsUpdate = true;
         renderer.render(scene, camera);
+        requestAnimationFrame(render);
     };
+
     requestAnimationFrame(render);
+
+    return { resizeHandler };
 };
