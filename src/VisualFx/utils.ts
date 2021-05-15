@@ -74,6 +74,7 @@ export const initRender = (
         renderer.setSize(width, height);
     };
     const resizeHandler = throttle(10, onResize);
+
     const render = () => {
         let i;
         dotsGeometry.verticesNeedUpdate = true;

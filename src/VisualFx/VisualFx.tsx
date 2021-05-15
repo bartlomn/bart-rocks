@@ -5,6 +5,25 @@ import styles from './VisualFx.module.scss';
 
 const initialCameraPos: [x: number, y: number, z: number] = [-25, 100, 300];
 
+const fragmentShader = `varying vec3 vColor;
+uniform sampler2D texture;
+void main(){
+    vec4 textureColor = texture2D( texture, gl_PointCoord );
+    if ( textureColor.a < 0.3 ) discard;
+    vec4 color = vec4(vColor.xyz, 1.0) * textureColor;
+    gl_FragColor = color;
+}`
+
+const vertexShader = `attribute float size;
+attribute vec3 color;
+varying vec3 vColor;
+void main() {
+    vColor = color;
+    vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+    gl_PointSize = size * ( 350.0 / - mvPosition.z );
+    gl_Position = projectionMatrix * mvPosition;
+}`
+
 type VisualFxProps = {
     loadComplete: boolean;
 };
@@ -14,13 +33,13 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
     const [isInitialised, setInitialised] = useState<boolean>(false);
     const initCallback = useCallback(async () => {
         // load dependencies
-        const [Three, CustomVector, Utils, fragmentShader, vertexShader] = await Promise.all([
+        performance.mark('deps:start');
+        const [Three, CustomVector, Utils] = await Promise.all([
             import('three'),
             import('./cutomVector').then((module) => module.default),
             import('./utils'),
-            import('./shaders/shader.frag').then((module) => module.default),
-            import('./shaders/shader.vert').then((module) => module.default),
         ]);
+
         const {
             BufferAttribute,
             BufferGeometry,
@@ -40,6 +59,10 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             VertexColors,
         } = Three;
         const { initRender, moveDot } = Utils;
+        performance.mark('deps:end');
+        console.log(performance.measure('3deps', 'deps:start', 'deps:end'));
+
+        document.querySelector('#root')?.classList.add('loadComplete');
 
         // set up renderer
         const textureFile = 'images/dotTexture.png';
@@ -162,6 +185,8 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             scene,
             canvas,
         );
+        performance.mark('postrender');
+        console.log(performance.measure('1st render', 'deps:start', 'postrender'));
 
         window.addEventListener('resize', resizeHandler);
 

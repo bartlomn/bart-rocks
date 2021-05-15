@@ -10,11 +10,11 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const applyReadyState = useCallback(() => {
         if (process.env.NODE_ENV === 'development') {
             setTimeout(() => {
-                document.querySelector('#root')?.classList.add('loadComplete');
+                // document.querySelector('#root')?.classList.add('loadComplete');
                 setLoadCompleted(true);
-            }, 3000);
+            }, 2500);
         } else {
-            document.querySelector('#root')?.classList.add('loadComplete');
+            // document.querySelector('#root')?.classList.add('loadComplete');
             setLoadCompleted(true);
         }
     }, []);
@@ -48,12 +48,11 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                 }}
             >
                 <span
+                    className={styles.loader}
                     style={{
                         position: 'relative',
                         left: '50%',
                         top: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        color: 'gray',
                     }}
                 >
                     ...

@@ -3,11 +3,20 @@
     opacity: 0;
     pointer-events: none;
     animation: overlayFadeIn;
-    animation-duration: 3s;
+    animation-duration: 2.5s;
     animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
     contain: strict;
+}
+
+.loader {
+    display: inline-block;
+    color: red;
+    animation: loaderSpin;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
 }
 
 .children {
@@ -21,7 +30,7 @@
     .overlay {
         animation: overlayFadeOut;
         animation-duration: 1.5s;
-        animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
         animation-iteration-count: 1;
         animation-fill-mode: forwards;
     }
@@ -41,5 +50,13 @@
     }
     100% {
         opacity: 0;
+    }
+}
+@keyframes loaderSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
