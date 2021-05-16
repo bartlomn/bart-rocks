@@ -72,22 +72,24 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     return (
         <Fragment>
             {/* This is our initial viewport to render */}
-            <div
-                style={{
-                    position: 'absolute',
-                    width: '100vw',
-                    height: '100vh',
-                    background: 'transparent',
-                }}
-            >
-                <span
+            {(!loadCompleted || navigator.userAgent === 'ReactSnap') && (
+                <div
                     style={{
-                        position: 'relative',
+                        position: 'absolute',
+                        width: '100vw',
+                        height: '100vh',
+                        background: 'transparent',
                     }}
                 >
-                    .
-                </span>
-            </div>
+                    <span
+                        style={{
+                            position: 'relative',
+                        }}
+                    >
+                        .
+                    </span>
+                </div>
+            )}
             <div
                 className={styles.overlay}
                 style={{
