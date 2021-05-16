@@ -1,6 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { BufferAttribute, Geometry, PerspectiveCamera, Points, Raycaster, Scene, Vector2, WebGLRenderer } from 'three';
-import { Elastic, Power0, Power2, TimelineMax, TweenMax } from 'gsap';
+import {
+    BufferAttribute,
+    Geometry,
+    LineBasicMaterial,
+    PerspectiveCamera,
+    Points,
+    Raycaster,
+    Scene,
+    Vector2,
+    WebGLRenderer,
+} from 'three';
+import { Elastic, Expo, Power0, Power2, TimelineMax, TweenMax } from 'gsap';
 import { throttle } from 'throttle-debounce';
 
 import CustomVector from './cutomVector';
@@ -63,6 +73,7 @@ export const initRender = (
     renderer: WebGLRenderer,
     scene: Scene,
     canvas: HTMLCanvasElement,
+    segmentsMaterial: LineBasicMaterial,
 ): { resizeHandler: () => void } => {
     const onResize = () => {
         canvas.style.width = '';
@@ -105,6 +116,42 @@ export const initRender = (
     };
 
     requestAnimationFrame(render);
+
+    // initial animations
+
+    // fade in dots
+    const dotsSizeSrc = { value: 0 };
+    new TimelineMax().to(dotsSizeSrc, 5, {
+        value: Math.max(5, Math.random() * 10),
+        ease: Expo.easeOut,
+        onUpdate: () => {
+            const newAttrs = new Array(attributeSizes.count).fill(dotsSizeSrc.value);
+            attributeSizes.set(newAttrs);
+            attributeSizes.needsUpdate = true;
+        },
+    });
+    // fade in edges
+    new TimelineMax().to(segmentsMaterial, 5, { opacity: 1, ease: Expo.easeOut });
+    // move camera
+    const cameraMeta = {
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z,
+        fov: camera.fov,
+    };
+    new TimelineMax().to(cameraMeta, 5, {
+        x: -25,
+        y: 130,
+        z: 300,
+        fov: 30,
+        ease: Expo.easeOut,
+        onUpdate: () => {
+            const { x, y, z, fov } = cameraMeta;
+            camera.position.set(x, y, z);
+            camera.fov = fov;
+            camera.updateProjectionMatrix();
+        },
+    });
 
     return { resizeHandler };
 };

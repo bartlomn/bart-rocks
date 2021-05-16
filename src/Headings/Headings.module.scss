@@ -3,6 +3,31 @@ $padding: 1rem;
 .base {
     font-family: cairo;
     padding: 0 $padding;
+    opacity: 0;
+}
+
+:global(.loadComplete) {
+    .base {
+        animation: headingAnimation;
+        animation-duration: 4s;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        animation-fill-mode: forwards;
+        will-change: opacity transform;
+    }
+    .h2 {
+        animation-delay: 1s;
+    }
+    .header {
+        animation-delay: 2s;
+    }
+    .hr {
+        animation: headingAnimation;
+        animation-delay: 1s;
+        animation-duration: 3s;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        animation-fill-mode: forwards;
+        will-change: opacity transform;
+    }
 }
 
 .h1 {
@@ -19,9 +44,11 @@ $padding: 1rem;
     font-size: 1.5rem;
     font-weight: 100;
     color: #170634;
+    max-width: 20rem;
 }
 .header {
     @extend .base;
+    text-align: justify;
 }
 
 .hr {
@@ -31,4 +58,16 @@ $padding: 1rem;
     border-top: none;
     margin-left: 1rem;
     margin-bottom: 1.25rem;
+    opacity: 0;
+}
+
+@keyframes headingAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-1rem) scale(1.1);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0rem) scale(1);
+    }
 }

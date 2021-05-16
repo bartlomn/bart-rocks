@@ -10,7 +10,7 @@ const Headings = (): JSX.Element => {
             <h2 className={styles.h2}>Hands-on contributor. Technology strategist. Servant team leader.</h2>
             <hr className={styles.hr}/>
             <header className={styles.header}>
-                It was the year 2000 that I had been first asked to build a website. Ever since then, I have been
+                It was in the year 2000 that I had been first asked to build a website. Ever since then, I have been
                 delivering digital products and services across a multitude of domains.
             </header>
         </Fragment>

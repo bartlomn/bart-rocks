@@ -3,7 +3,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './VisualFx.module.scss';
 
-const initialCameraPos: [x: number, y: number, z: number] = [-25, 100, 300];
+const initialCameraPos: [x: number, y: number, z: number] = [-25, 150, 250];
 
 const fragmentShader = `varying vec3 vColor;
 uniform sampler2D texture;
@@ -32,6 +32,9 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isInitialised, setInitialised] = useState<boolean>(false);
     const initCallback = useCallback(async () => {
+
+        document.querySelector('#root')?.classList.add('loadComplete');
+
         // load dependencies
         performance.mark('deps:start');
         const [Three, CustomVector, Utils] = await Promise.all([
@@ -62,8 +65,6 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         performance.mark('deps:end');
         console.log(performance.measure('3deps', 'deps:start', 'deps:end'));
 
-        document.querySelector('#root')?.classList.add('loadComplete');
-
         // set up renderer
         const textureFile = 'images/dotTexture.png';
         const canvas = canvasRef.current;
@@ -87,7 +88,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         const raycaster = new Raycaster();
         raycaster.params.Points!.threshold = 6;
 
-        const camera = new PerspectiveCamera(30, width / height, 0.1, 2000);
+        const camera = new PerspectiveCamera(20, width / height, 0.1, 2000);
         camera.position.set(...initialCameraPos);
 
         const galaxy = new Group();
@@ -123,7 +124,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             dotsGeometry.vertices.push(vector);
             vector.toArray(positions, i * 3);
             colors[vector.color].toArray(colorsAttribute, i * 3);
-            sizes[i] = 5;
+            sizes[i] = 0;
         }
         const bufferWrapGeom = new BufferGeometry();
         bufferWrapGeom.setAttribute('position', attributePositions);
@@ -149,7 +150,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         const segmentsMat = new LineBasicMaterial({
             color: 0xffffff,
             transparent: true,
-            opacity: 0.6,
+            opacity: 0,
             vertexColors: VertexColors,
         });
         for (let i = dotsGeometry.vertices.length - 1; i >= 0; i--) {
@@ -184,6 +185,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             renderer,
             scene,
             canvas,
+            segmentsMat,
         );
         performance.mark('postrender');
         console.log(performance.measure('1st render', 'deps:start', 'postrender'));
