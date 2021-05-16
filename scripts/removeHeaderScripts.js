@@ -26,8 +26,9 @@ const removeHeaderScripts = async () => {
     console.info(`Removed ${before - after} scripts from the <head> element.`);
     // next we'll remove the styles from the head, to be loaded later in the page loading cycle
     // to be able to do that, we'll save the meta to a file that we'll load at runtime
+    // actually we're loading just the main css chunk
     before = head.childNodes.length;
-    let removed = head.childNodes.filter((node) => styleLinkFilter(node));
+    let removed = head.childNodes.filter((node) => styleLinkFilter(node) && node.attrs[0].value.indexOf('main') !== -1);
     head.childNodes = head.childNodes.filter((node) => !styleLinkFilter(node));
     after = head.childNodes.length;
     // remove circular refs
@@ -38,7 +39,7 @@ const removeHeaderScripts = async () => {
     console.info(`Removed ${before - after} styles from the <head> element.`);
     const revisedContents = serialize(document);
     await fs.writeFile(htmlFilePath, revisedContents, 'utf-8');
-    await fs.writeFile(assetsFilePath, JSON.stringify(removed), 'utf-8')
+    await fs.writeFile(assetsFilePath, JSON.stringify(removed), 'utf-8');
     console.info(`Saved ${htmlFilePath}`);
 };
 

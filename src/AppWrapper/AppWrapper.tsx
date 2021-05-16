@@ -5,17 +5,32 @@ import VisualFx from '../VisualFx';
 
 type AppWrapperProps = PropsWithChildren<Record<string, unknown>>;
 
+type Attr = { name: string; value: string };
+type LinkMeta = {
+    tagName: keyof HTMLElementTagNameMap;
+    attrs: Attr[];
+};
+
 const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const [loadCompleted, setLoadCompleted] = useState<boolean>(false);
     const applyReadyState = useCallback(() => {
+        const _apply = async () => {
+            const crititcalPathAssets = await fetch('/crit_path_assets.json').then((res) => res.json());
+            crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
+                const linkTag = document.createElement(linkMeta.tagName);
+                linkMeta.attrs.forEach((attr) => {
+                    linkTag.setAttribute(attr.name, attr.value);
+                });
+                document.querySelector('head')?.appendChild(linkTag);
+            });
+            setLoadCompleted(true);
+        };
         if (process.env.NODE_ENV === 'development') {
             setTimeout(() => {
-                // document.querySelector('#root')?.classList.add('loadComplete');
-                setLoadCompleted(true);
+                _apply();
             }, 2500);
         } else {
-            // document.querySelector('#root')?.classList.add('loadComplete');
-            setLoadCompleted(true);
+            _apply();
         }
     }, []);
     const readyStateChangeHandler = useCallback(() => {
