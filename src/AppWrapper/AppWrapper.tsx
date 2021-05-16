@@ -1,3 +1,4 @@
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
 import React, { FC, Fragment, PropsWithChildren, useCallback, useEffect, useState } from 'react';
 
 import styles from './AppWrapper.module.scss';
@@ -12,7 +13,7 @@ type LinkMeta = {
 };
 
 const fontsCss = `@font-face {
-    font-family: 'cairo';
+    font-family: cairo;
     src: url('/static/media/fonts/cairo/Cairo-Regular.ttf');
     font-style: normal;
     font-display: swap;
@@ -23,24 +24,25 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const applyReadyState = useCallback(() => {
         const _apply = async () => {
             // load the main css chunk
-            const crititcalPathAssets = await fetch('/crit_path_assets.json').then((res) => res.json());
-            crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
-                const linkTag = document.createElement(linkMeta.tagName);
-                linkMeta.attrs.forEach((attr) => {
-                    linkTag.setAttribute(attr.name, attr.value);
+            if (process.env.NODE_ENV !== 'development') {
+                const crititcalPathAssets = await fetch('/crit_path_assets.json').then((res) => res.json());
+                crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
+                    const linkTag = document.createElement(linkMeta.tagName);
+                    linkMeta.attrs.forEach((attr) => {
+                        linkTag.setAttribute(attr.name, attr.value);
+                    });
+                    document.querySelector('head')?.appendChild(linkTag);
                 });
-                document.querySelector('head')?.appendChild(linkTag);
-            });
+            }
+            // load fonts
             const fontsStyleTag = document.createElement('style');
             fontsStyleTag.appendChild(document.createTextNode(fontsCss));
+            // document.fonts.onloadingdone is not working as expected (but of course) on Safari,
+            // so we'll just wait for a bit before proceeding
             document.querySelector('head')?.appendChild(fontsStyleTag);
-            document.fonts.onloadingdone = (event: FontFaceSetLoadEvent) => {
-                const hasFontFace = event.fontfaces.find(fontFace => fontFace.family === 'cairo');
-                if(hasFontFace) {
-                    document.fonts.onloadingdone = null;
-                    setLoadCompleted(true);
-                }
-            }
+            setTimeout(() => {
+                setLoadCompleted(true);
+            }, 100);
         };
         if (process.env.NODE_ENV === 'development') {
             setTimeout(() => {
@@ -69,6 +71,25 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     }, []);
     return (
         <Fragment>
+            {/* This is our initial viewport to render */}
+            <div
+                style={{
+                    position: 'absolute',
+                    width: '100vw',
+                    height: '100vh',
+                    background: 'transparent',
+                }}
+            >
+                <span
+                    style={{
+                        position: 'relative',
+                        left: '50%',
+                        top: '50%',
+                    }}
+                >
+                    .
+                </span>
+            </div>
             <div
                 className={styles.overlay}
                 style={{
