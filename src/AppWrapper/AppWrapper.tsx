@@ -83,8 +83,6 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                 <span
                     style={{
                         position: 'relative',
-                        left: '50%',
-                        top: '50%',
                     }}
                 >
                     .
@@ -96,20 +94,15 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                     position: 'absolute',
                     width: '100vw',
                     height: '100vh',
-                    backgroundColor: '#000000',
+                    background: 'radial-gradient(circle at 55% 55%, rgba(25, 35, 35, 1) 0.1%, rgb(0, 0, 0))',
                     zIndex: 1000,
                 }}
             >
-                <span
-                    className={styles.loader}
-                    style={{
-                        position: 'relative',
-                        left: '50%',
-                        top: '50%',
-                    }}
-                >
-                    ...
-                </span>
+                <div className={styles.loaderWrapper}>
+                    <span />
+                    <span />
+                    <span />
+                </div>
             </div>
             <div className={styles.children} style={loadCompleted ? {} : { opacity: 0 }}>
                 {children}

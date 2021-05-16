@@ -1,4 +1,5 @@
 .overlay {
+    $dotSize: 1rem;
     will-change: opacity;
     opacity: 0;
     pointer-events: none;
@@ -7,16 +8,37 @@
     animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
-    contain: strict;
-}
+    // contain: strict;
 
-.loader {
-    display: inline-block;
-    color: red;
-    animation: loaderSpin;
-    animation-duration: 2s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
+    .loaderWrapper {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%);
+        display: flex;
+    }
+
+    span {
+        display: inline-block;
+        width: $dotSize;
+        height: $dotSize;
+        background: lighten(rgba(35, 35, 35, 1), 20%);
+        border-radius: $dotSize/2;
+        animation: loadingAnimation;
+        animation-duration: 750ms;
+        animation-timing-function: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+        animation-iteration-count: infinite;
+        animation-direction: alternate;
+        animation-delay: 300ms;
+        margin: 0 0.5rem;
+        will-change: transform;
+    }
+    span:nth-of-type(1) {
+        animation-delay: 0ms;
+    }
+    span:nth-of-type(2) {
+        animation-delay: 150ms;
+    }
 }
 
 :global(.loadComplete) {
@@ -48,11 +70,13 @@
         opacity: 0;
     }
 }
-@keyframes loaderSpin {
+@keyframes loadingAnimation {
     0% {
-        transform: rotate(0deg);
+        // filter: drop-shadow(10px 20px 15px rgba(0, 0, 0, 0.65));
+        transform: translateY(0);
     }
     100% {
-        transform: rotate(360deg);
+        // filter: drop-shadow(10px 60px 15px rgba(0, 0, 0, 0.1));
+        transform: translateY(-40px);
     }
 }
