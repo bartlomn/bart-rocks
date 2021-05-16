@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
+        "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
         "postbuild": "react-snap && node scripts/removeHeaderScripts.js",
         "test": "react-app-rewired test",
         "lint": "eslint src"
