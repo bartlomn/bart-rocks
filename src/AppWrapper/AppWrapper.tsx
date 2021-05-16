@@ -58,7 +58,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                     ...
                 </span>
             </div>
-            <div className={styles.children}>
+            <div className={styles.children} style={loadCompleted ? {} : { opacity: 0 }}>
                 {children}
                 <VisualFx loadComplete={loadCompleted} />
             </div>

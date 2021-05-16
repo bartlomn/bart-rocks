@@ -8,18 +8,38 @@ const { parse, serialize } = require('parse5');
 const { promises: fs } = require('fs');
 const path = require('path');
 
+const styleLinkFilter = (node) =>
+    node.nodeName === 'link' && node.attrs[0].name === 'href' && node.attrs[0].value.indexOf('.css') !== -1;
+
 const removeHeaderScripts = async () => {
-    const filePath = path.resolve(process.cwd(), 'build', 'index.html');
-    const fileContents = await fs.readFile(filePath, 'utf-8');
+    const htmlFilePath = path.resolve(process.cwd(), 'build', 'index.html');
+    const assetsFilePath = path.resolve(process.cwd(), 'build', 'crit_path_assets.json');
+    const fileContents = await fs.readFile(htmlFilePath, 'utf-8');
     const document = parse(fileContents);
     const head = document.childNodes[1].childNodes[0];
-    const before = head.childNodes.length;
+    // remove the script tags placed there by react-snap.
+    // we don't need these, as webpack will do it for us
+    // in a lazy manner
+    let before = head.childNodes.length;
     head.childNodes = head.childNodes.filter((node) => node.nodeName !== 'script');
-    const after = head.childNodes.length;
-    console.info(`Removed ${before - after} scripts fomr the <head> element.`);
+    let after = head.childNodes.length;
+    console.info(`Removed ${before - after} scripts from the <head> element.`);
+    // next we'll remove the styles from the head, to be loaded later in the page loading cycle
+    // to be able to do that, we'll save the meta to a file that we'll load at runtime
+    before = head.childNodes.length;
+    let removed = head.childNodes.filter((node) => styleLinkFilter(node));
+    head.childNodes = head.childNodes.filter((node) => !styleLinkFilter(node));
+    after = head.childNodes.length;
+    // remove circular refs
+    removed = removed.map((node) => {
+        delete node.parentNode;
+        return node;
+    });
+    console.info(`Removed ${before - after} styles from the <head> element.`);
     const revisedContents = serialize(document);
-    await fs.writeFile(filePath, revisedContents, 'utf-8');
-    console.info(`Saved ${filePath}`);
+    await fs.writeFile(htmlFilePath, revisedContents, 'utf-8');
+    await fs.writeFile(assetsFilePath, JSON.stringify(removed), 'utf-8')
+    console.info(`Saved ${htmlFilePath}`);
 };
 
 removeHeaderScripts();
