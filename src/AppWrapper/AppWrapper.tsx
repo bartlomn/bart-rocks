@@ -11,10 +11,18 @@ type LinkMeta = {
     attrs: Attr[];
 };
 
+const fontsCss = `@font-face {
+    font-family: 'cairo';
+    src: url('/static/media/fonts/cairo/Cairo-Regular.ttf');
+    font-style: normal;
+    font-display: swap;
+}`;
+
 const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const [loadCompleted, setLoadCompleted] = useState<boolean>(false);
     const applyReadyState = useCallback(() => {
         const _apply = async () => {
+            // load the main css chunk
             const crititcalPathAssets = await fetch('/crit_path_assets.json').then((res) => res.json());
             crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
                 const linkTag = document.createElement(linkMeta.tagName);
@@ -23,7 +31,16 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                 });
                 document.querySelector('head')?.appendChild(linkTag);
             });
-            setLoadCompleted(true);
+            const fontsStyleTag = document.createElement('style');
+            fontsStyleTag.appendChild(document.createTextNode(fontsCss));
+            document.querySelector('head')?.appendChild(fontsStyleTag);
+            document.fonts.onloadingdone = (event: FontFaceSetLoadEvent) => {
+                const hasFontFace = event.fontfaces.find(fontFace => fontFace.family === 'cairo');
+                if(hasFontFace) {
+                    document.fonts.onloadingdone = null;
+                    setLoadCompleted(true);
+                }
+            }
         };
         if (process.env.NODE_ENV === 'development') {
             setTimeout(() => {
