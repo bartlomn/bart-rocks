@@ -3,7 +3,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import styles from './VisualFx.module.scss';
 
-const initialCameraPos: [x: number, y: number, z: number] = [-25, 150, 250];
+const initialCameraPos: [x: number, y: number, z: number] = [-25, 50, 0];
 
 const fragmentShader = `varying vec3 vColor;
 uniform sampler2D texture;
@@ -33,8 +33,6 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
     const [isInitialised, setInitialised] = useState<boolean>(false);
     const initCallback = useCallback(async () => {
 
-        document.querySelector('#root')?.classList.add('loadComplete');
-
         // load dependencies
         performance.mark('scene:deps:start');
         const [Three, Utils] = await Promise.all([
@@ -63,6 +61,8 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         } = Three;
         const { initRender, moveDot } = Utils;
 
+        document.querySelector('#root')?.classList.add('loadComplete');
+
         // set up renderer
         const textureFile = 'images/dotTexture.png';
         const canvas = canvasRef.current;
@@ -86,7 +86,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         const raycaster = new Raycaster();
         raycaster.params.Points!.threshold = 6;
 
-        const camera = new PerspectiveCamera(20, width / height, 0.1, 2000);
+        const camera = new PerspectiveCamera(50, width / height, 0.1, 2000);
         camera.position.set(...initialCameraPos);
 
         const galaxy = new Group();

@@ -1,32 +1,23 @@
-$padding: 1rem;
+@import './../styles/breakpoints.scss';
 
 .base {
+    color: #170634;
     font-family: cairo;
-    padding: 0 $padding;
+    padding: 0 1rem;
     opacity: 0;
-}
+    will-change: opacity transform;
 
-:global(.loadComplete) {
-    .base {
-        animation: headingAnimation;
-        animation-duration: 2s;
-        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-        animation-fill-mode: forwards;
-        will-change: opacity transform;
+    @include sm {
+        padding: 0 1.1rem;
     }
-    .h2 {
-        animation-delay: .5s;
+    @include md {
+        padding: 0 1.35rem;
     }
-    .header {
-        animation-delay: 1s;
+    @include lg {
+        padding: 0 1.8rem;
     }
-    .hr {
-        animation: headingAnimation;
-        animation-delay: .5s;
-        animation-duration: 2s;
-        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-        animation-fill-mode: forwards;
-        will-change: opacity transform;
+    @include xl {
+        padding: 0 2.5rem;
     }
 }
 
@@ -38,17 +29,41 @@ $padding: 1rem;
     -webkit-text-fill-color: transparent;
     background-clip: inherit;
     -webkit-background-clip: text;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+
+    @include md {
+        margin-top: 4rem;
+
+        &::before {
+            content: "Hi, I'm   ";
+            width: 100vw;
+            display: inline-block;
+            font-weight: 900;
+            background: #b4ddd0;
+            -webkit-text-fill-color: transparent;
+            background-clip: inherit;
+            -webkit-background-clip: text;
+            font-size: 4rem;
+            position: absolute;
+            mix-blend-mode: color;
+            transform: translate(-1.5rem, -2.5rem);
+        }
+    }
 }
 .h2 {
     @extend .base;
     font-size: 1.5rem;
     font-weight: 100;
-    color: #170634;
     max-width: 20rem;
 }
 .header {
     @extend .base;
     text-align: justify;
+
+    @include md {
+        max-width: 35rem;
+    }
 }
 
 .hr {
@@ -57,8 +72,44 @@ $padding: 1rem;
     border-style: solid;
     border-top: none;
     margin-left: 1rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
     opacity: 0;
+    will-change: opacity transform;
+
+    @include sm {
+        margin-left: 1.1rem;
+    }
+    @include md {
+        margin-left: 1.35rem;
+    }
+    @include lg {
+        margin-left: 1.8rem;
+    }
+    @include xl {
+        margin-left: 2.5rem;
+    }
+}
+
+:global(.loadComplete) {
+    .base {
+        animation: headingAnimation;
+        animation-duration: 2s;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        animation-fill-mode: forwards;
+    }
+    .h2 {
+        animation-delay: 0.5s;
+    }
+    .header {
+        animation-delay: 1s;
+    }
+    .hr {
+        animation: headingAnimation;
+        animation-delay: 0.5s;
+        animation-duration: 2s;
+        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+        animation-fill-mode: forwards;
+    }
 }
 
 @keyframes headingAnimation {

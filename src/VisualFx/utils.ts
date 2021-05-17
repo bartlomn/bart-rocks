@@ -121,13 +121,14 @@ export const initRender = (
     performance.mark('scene:render:init');
     performance.measure('scene:processing', 'scene:deps:start', 'scene:render:init');
     const [processingDelay] = performance.getEntriesByName('scene:processing');
-    const animationDelay = Math.max(0, 1500 - processingDelay.duration) / 1000;
+    const animationDelay = Math.max(0, 2000 - processingDelay.duration) / 1000;
+    const animationDuration = 7.5;
 
     // fade in dots
     const dotsSizeSrc = { value: 0 };
-    new TimelineMax().to(dotsSizeSrc, 5, {
+    new TimelineMax().to(dotsSizeSrc, animationDuration, {
         delay: animationDelay,
-        value: Math.max(5, Math.random() * 10),
+        value: Math.max(5, Math.random() * 15),
         ease: Expo.easeOut,
         onUpdate: () => {
             const newAttrs = new Array(attributeSizes.count).fill(dotsSizeSrc.value);
@@ -136,7 +137,11 @@ export const initRender = (
         },
     });
     // fade in edges
-    new TimelineMax().to(segmentsMaterial, 5, { opacity: 1, ease: Expo.easeOut, delay: animationDelay });
+    new TimelineMax().to(segmentsMaterial, animationDuration, {
+        opacity: 1,
+        ease: Expo.easeOut,
+        delay: animationDelay,
+    });
     // move camera
     const cameraMeta = {
         x: camera.position.x,
@@ -144,9 +149,9 @@ export const initRender = (
         z: camera.position.z,
         fov: camera.fov,
     };
-    new TimelineMax().to(cameraMeta, 5, {
+    new TimelineMax().to(cameraMeta, animationDuration, {
         delay: animationDelay,
-        x: -25,
+        x: -50,
         y: 130,
         z: 300,
         fov: 30,
