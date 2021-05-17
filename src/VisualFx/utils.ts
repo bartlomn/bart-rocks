@@ -120,8 +120,8 @@ export const initRender = (
 
     performance.mark('scene:render:init');
     performance.measure('scene:processing', 'scene:deps:start', 'scene:render:init');
-    const [processingDelay] = performance.getEntriesByName('scene:processing');
-    const animationDelay = Math.max(0, 2000 - processingDelay.duration) / 1000;
+
+    const animationDelay = 2;
     const animationDuration = 7.5;
 
     // fade in dots
