@@ -36,10 +36,9 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         document.querySelector('#root')?.classList.add('loadComplete');
 
         // load dependencies
-        performance.mark('deps:start');
-        const [Three, CustomVector, Utils] = await Promise.all([
+        performance.mark('scene:deps:start');
+        const [Three, Utils] = await Promise.all([
             import('three'),
-            import('./cutomVector').then((module) => module.default),
             import('./utils'),
         ]);
 
@@ -59,11 +58,10 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             TextureLoader,
             WebGLRenderer,
             Vector2,
+            Vector3,
             VertexColors,
         } = Three;
         const { initRender, moveDot } = Utils;
-        performance.mark('deps:end');
-        console.log(performance.measure('3deps', 'deps:start', 'deps:end'));
 
         // set up renderer
         const textureFile = 'images/dotTexture.png';
@@ -104,9 +102,9 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         const attributePositions = new BufferAttribute(positions, 3);
         const sizes = new Float32Array(dotsAmount);
         const colorsAttribute = new Float32Array(dotsAmount * 3);
-        let vector: InstanceType<typeof CustomVector>;
+        let vector: any;
         for (let i = 0; i < dotsAmount; i++) {
-            vector = new CustomVector();
+            vector = new Vector3();
 
             vector.color = Math.floor(Math.random() * colors.length);
             vector.theta = Math.random() * Math.PI * 2;
@@ -154,9 +152,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             vertexColors: VertexColors,
         });
         for (let i = dotsGeometry.vertices.length - 1; i >= 0; i--) {
-            const vector: InstanceType<typeof CustomVector> = dotsGeometry.vertices[i] as InstanceType<
-                typeof CustomVector
-            >;
+            const vector: any = dotsGeometry.vertices[i];
             for (let j = dotsGeometry.vertices.length - 1; j >= 0; j--) {
                 if (i !== j && vector.distanceTo(dotsGeometry.vertices[j]) < 12) {
                     segmentsGeom.vertices.push(vector);
@@ -187,8 +183,6 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             canvas,
             segmentsMat,
         );
-        performance.mark('postrender');
-        console.log(performance.measure('1st render', 'deps:start', 'postrender'));
 
         window.addEventListener('resize', resizeHandler);
 

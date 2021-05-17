@@ -8,17 +8,16 @@ import {
     Raycaster,
     Scene,
     Vector2,
+    Vector3,
     WebGLRenderer,
 } from 'three';
 import { Elastic, Expo, Power0, Power2, TimelineMax, TweenMax } from 'gsap';
 import { throttle } from 'throttle-debounce';
 
-import CustomVector from './cutomVector';
-
 let hovered: number[] = [];
 let prevHovered: number[] = [];
 
-export const moveDot = (vector: CustomVector, index: number, attributePositions: BufferAttribute): void => {
+export const moveDot = (vector: Vector3, index: number, attributePositions: BufferAttribute): void => {
     const tempVector = vector.clone();
     tempVector.multiplyScalar((Math.random() - 0.5) * 0.2 + 1);
     TweenMax.to(vector, Math.random() * 3 + 3, {
@@ -36,15 +35,15 @@ export const moveDot = (vector: CustomVector, index: number, attributePositions:
 };
 
 export const onDotHover = (index: number, dotsGeometry: Geometry, attributeSizes: BufferAttribute): void => {
-    (dotsGeometry.vertices[index] as CustomVector).tl = new TimelineMax();
-    (dotsGeometry.vertices[index] as CustomVector).tl!.to(
+    (dotsGeometry.vertices[index] as any).tl = new TimelineMax();
+    (dotsGeometry.vertices[index] as any).tl!.to(
         dotsGeometry.vertices[index],
         1,
         {
             scaleX: 10,
             ease: Elastic.easeOut.config(2, 0.2),
             onUpdate: () => {
-                attributeSizes.set([(dotsGeometry.vertices[index] as CustomVector).scaleX!], index);
+                attributeSizes.set([(dotsGeometry.vertices[index] as any).scaleX!], index);
             },
         },
         5,
@@ -52,11 +51,11 @@ export const onDotHover = (index: number, dotsGeometry: Geometry, attributeSizes
 };
 
 export const mouseOut = (index: number, dotsGeometry: Geometry, attributeSizes: BufferAttribute): void => {
-    (dotsGeometry.vertices[index] as CustomVector).tl!.to(dotsGeometry.vertices[index], 0.4, {
+    (dotsGeometry.vertices[index] as any).tl!.to(dotsGeometry.vertices[index], 0.4, {
         scaleX: 5,
         ease: Power2.easeOut,
         onUpdate: () => {
-            attributeSizes.set([(dotsGeometry.vertices[index] as CustomVector).scaleX!], index);
+            attributeSizes.set([(dotsGeometry.vertices[index] as any).scaleX!], index);
         },
     });
 };
@@ -119,9 +118,15 @@ export const initRender = (
 
     // initial animations
 
+    performance.mark('scene:render:init');
+    performance.measure('scene:processing', 'scene:deps:start', 'scene:render:init');
+    const [processingDelay] = performance.getEntriesByName('scene:processing');
+    const animationDelay = Math.max(0, 1500 - processingDelay.duration) / 1000;
+
     // fade in dots
     const dotsSizeSrc = { value: 0 };
     new TimelineMax().to(dotsSizeSrc, 5, {
+        delay: animationDelay,
         value: Math.max(5, Math.random() * 10),
         ease: Expo.easeOut,
         onUpdate: () => {
@@ -131,7 +136,7 @@ export const initRender = (
         },
     });
     // fade in edges
-    new TimelineMax().to(segmentsMaterial, 5, { opacity: 1, ease: Expo.easeOut });
+    new TimelineMax().to(segmentsMaterial, 5, { opacity: 1, ease: Expo.easeOut, delay: animationDelay });
     // move camera
     const cameraMeta = {
         x: camera.position.x,
@@ -140,6 +145,7 @@ export const initRender = (
         fov: camera.fov,
     };
     new TimelineMax().to(cameraMeta, 5, {
+        delay: animationDelay,
         x: -25,
         y: 130,
         z: 300,
