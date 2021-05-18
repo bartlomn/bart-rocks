@@ -1,0 +1,37 @@
+@import './../styles/layout.scss';
+@import './../styles/colors.scss';
+
+.offCanvasMenu {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 3s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 1000;
+
+    &::before {
+        content: '';
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: absolute;
+        background: linear-gradient(90deg, #16c1d836, #cd9add4d);
+    }
+}
+
+.offCanvasButton {
+    -webkit-appearance: none;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: $padding-global/2;
+    top: $padding-global/2;
+    font-size: 2.25rem;
+}
+
+:global(.loadComplete) {
+    .offCanvasMenu {
+        opacity: 1;
+    }
+}

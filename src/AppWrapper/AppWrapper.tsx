@@ -1,8 +1,9 @@
-/* eslint-disable prefer-arrow/prefer-arrow-functions */
-import React, { FC, Fragment, PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import React, { FC, Fragment, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
+
+import VisualFx from '../VisualFx';
+import OffCanvasMenu from '../OffCanvasMenu';
 
 import styles from './AppWrapper.module.scss';
-import VisualFx from '../VisualFx';
 
 type AppWrapperProps = PropsWithChildren<Record<string, unknown>>;
 
@@ -21,6 +22,7 @@ const fontsCss = `@font-face {
 
 const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const [loadCompleted, setLoadCompleted] = useState<boolean>(false);
+    const viewportRef = useRef<HTMLDivElement>(null);
     const applyReadyState = useCallback(() => {
         const _apply = async () => {
             // load the main css chunk
@@ -79,6 +81,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                         width: '100vw',
                         height: '100vh',
                         background: 'transparent',
+                        overflow: 'hidden',
                     }}
                 >
                     <span
@@ -98,6 +101,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                     height: '100vh',
                     background: 'radial-gradient(circle at 55% 55%, rgba(25, 35, 35, 1) 0.1%, rgb(0, 0, 0))',
                     zIndex: 1000,
+                    overflow: 'hidden',
                 }}
             >
                 <div className={styles.loaderWrapper}>
@@ -106,7 +110,8 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
                     <span />
                 </div>
             </div>
-            <div className={styles.children} style={loadCompleted ? {} : { opacity: 0 }}>
+            <OffCanvasMenu canvasRef={viewportRef} />
+            <div ref={viewportRef} className={styles.children} style={loadCompleted ? {} : { opacity: 0 }}>
                 {children}
                 <VisualFx loadComplete={loadCompleted} />
             </div>

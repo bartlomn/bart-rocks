@@ -128,7 +128,7 @@ export const initRender = (
     const dotsSizeSrc = { value: 0 };
     new TimelineMax().to(dotsSizeSrc, animationDuration, {
         delay: animationDelay,
-        value: Math.max(5, Math.random() * 15),
+        value: 5,
         ease: Expo.easeOut,
         onUpdate: () => {
             const newAttrs = new Array(attributeSizes.count).fill(dotsSizeSrc.value);

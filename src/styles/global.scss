@@ -1,13 +1,16 @@
 @import 'modern-normalize/modern-normalize.css';
 @import './breakpoints.scss';
+@import './colors.scss';
 
 #root {
     background: gray;
     overflow: hidden;
     min-height: 100vh;
+    color: $global-text-color;
 
     &.loadComplete {
         min-height: unset;
+        perspective: 1500px;
     }
 }
 
