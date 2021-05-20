@@ -20,9 +20,23 @@ const fontsCss = `@font-face {
     font-display: swap;
 }`;
 
+const RESIZE_CLASS = 'isResizing';
+
 const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
+    let resizeTmr: ReturnType<typeof setTimeout>;
     const [loadCompleted, setLoadCompleted] = useState<boolean>(false);
     const viewportRef = useRef<HTMLDivElement>(null);
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const onResizeEnd = useCallback(() => {
+        rootRef.current?.classList.remove(RESIZE_CLASS);
+    }, []);
+    const onResize = useCallback(() => {
+        if (resizeTmr) clearTimeout(resizeTmr);
+        resizeTmr = setTimeout(onResizeEnd, 500);
+        if (!rootRef.current?.classList.contains(RESIZE_CLASS)) {
+            rootRef.current?.classList.add(RESIZE_CLASS);
+        }
+    }, []);
     const applyReadyState = useCallback(() => {
         const _apply = async () => {
             // load the main css chunk
@@ -60,6 +74,7 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
         }
     }, []);
     useEffect(() => {
+        rootRef.current = document.querySelector('#root');
         // when pre-rendering ssg snapshot, we want pristine state
         if (navigator.userAgent === 'ReactSnap') return;
         if (document.readyState === 'complete') {
@@ -67,8 +82,10 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
             return;
         }
         document.onreadystatechange = readyStateChangeHandler;
+        window.addEventListener('resize', onResize);
         return () => {
             document.onreadystatechange = null;
+            window.removeEventListener('resize', onResize);
         };
     }, []);
     return (

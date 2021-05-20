@@ -83,7 +83,7 @@ export const initRender = (
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
     };
-    const resizeHandler = throttle(10, onResize);
+    const resizeHandler = throttle(60, onResize);
 
     const render = () => {
         let i;

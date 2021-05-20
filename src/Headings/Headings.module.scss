@@ -61,6 +61,7 @@
 .header {
     @extend .base;
     text-align: justify;
+    margin-bottom: 1.5rem;
 
     @include md {
         max-width: 35rem;

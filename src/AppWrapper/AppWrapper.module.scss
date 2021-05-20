@@ -62,8 +62,10 @@
         will-change: opacity;
         transition: opacity 1s cubic-bezier(0.19, 1, 0.22, 1);
     }
+}
 
-    &:global(.menuVisible) {
+:global(.menuVisible) {
+    .children {
         transform: translateX(-50%) rotateY(45deg) translateZ(-50px);
 
         &::after {
