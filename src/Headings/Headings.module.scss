@@ -6,7 +6,7 @@
     font-family: cairo;
     padding: 0 $padding-global;
     opacity: 0;
-    will-change: opacity transform;
+    will-change: opacity, transform;
 
     @include sm {
         padding: 0 $padding-global-sm;
@@ -76,7 +76,7 @@
     margin-left: $padding-global;
     margin-bottom: 1.5rem;
     opacity: 0;
-    will-change: opacity transform;
+    will-change: opacity, transform;
 
     @include sm {
         margin-left: $padding-global-sm;

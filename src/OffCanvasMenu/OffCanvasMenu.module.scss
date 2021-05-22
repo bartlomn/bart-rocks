@@ -11,6 +11,19 @@
     transition: opacity 3s cubic-bezier(0.19, 1, 0.22, 1);
     z-index: 1000;
     overflow: hidden;
+
+    &::before {
+        content: '';
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        position: absolute;
+        background: linear-gradient(90deg, #16c1d836, #cd9add4d);
+        pointer-events: none;
+        opacity: 0;
+        will-change: opacity;
+        transition: opacity 1s cubic-bezier(0.19, 1, 0.22, 1);
+    }
 }
 
 .list {
@@ -36,7 +49,7 @@
     li {
         transform: translateX(10rem);
         opacity: 0;
-        will-change: transform opacity;
+        will-change: transform, opacity;
         transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1), opacity 1s cubic-bezier(0.19, 1, 0.22, 1);
         transition-delay: 0ms;
 
@@ -84,13 +97,7 @@
         height: 100vh;
 
         &::before {
-            content: '';
-            width: 100vw;
-            height: 100vh;
-            display: block;
-            position: absolute;
-            background: linear-gradient(90deg, #16c1d836, #cd9add4d);
-            pointer-events: none;
+            opacity: 1;
         }
     }
     .offCanvasButton {
@@ -116,5 +123,14 @@
             opacity: 0;
             transition: none;
         }
+    }
+}
+
+@keyframes menuBgFadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
