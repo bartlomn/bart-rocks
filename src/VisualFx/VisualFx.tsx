@@ -79,7 +79,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             antialias: true,
             alpha: true,
         });
-        renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+        renderer.setPixelRatio(1); // or window.devicePixelRatio
         renderer.setSize(width, height);
 
         // set up geometry

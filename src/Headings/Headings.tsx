@@ -11,7 +11,7 @@ const Headings = (): JSX.Element => {
             <hr className={styles.hr}/>
             <header className={styles.header}>
                 It was in the year 2000 that I had been first asked to build a website. Ever since then, I have been
-                delivering digital products and services across a multitude of domains.
+                delivering digital products and services across a multitude of market domains.
             </header>
         </>
     );
