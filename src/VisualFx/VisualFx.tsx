@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import styles from './VisualFx.module.scss';
 
@@ -29,6 +30,7 @@ type VisualFxProps = {
 };
 
 const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
+    const location = useLocation();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [isInitialised, setInitialised] = useState<boolean>(false);
     const initCallback = useCallback(async () => {
@@ -182,6 +184,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
             scene,
             canvas,
             segmentsMat,
+            location.pathname === '/'
         );
 
         window.addEventListener('resize', resizeHandler);

@@ -129,7 +129,9 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
             </div>
             <OffCanvasMenu canvasRef={viewportRef} />
             <div ref={viewportRef} className={styles.children} style={loadCompleted ? {} : { opacity: 0 }}>
-                {children}
+                <main data-testid="app" className={styles.app}>
+                    {children}
+                </main>
                 <VisualFx loadComplete={loadCompleted} />
             </div>
         </Fragment>

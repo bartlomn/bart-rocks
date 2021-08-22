@@ -64,6 +64,12 @@
     }
 }
 
+.app {
+    position: absolute;
+    height: 100vh;
+    overflow: scroll;
+}
+
 :global(.menuVisible) {
     .children {
         transform: translateX(-50%) rotateY(45deg) translateZ(-50px);

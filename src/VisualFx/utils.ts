@@ -73,6 +73,7 @@ export const initRender = (
     scene: Scene,
     canvas: HTMLCanvasElement,
     segmentsMaterial: LineBasicMaterial,
+    isHome: boolean,
 ): { resizeHandler: () => void } => {
     const onResize = () => {
         canvas.style.width = '';
@@ -121,8 +122,8 @@ export const initRender = (
     performance.mark('scene:render:init');
     performance.measure('scene:processing', 'scene:deps:start', 'scene:render:init');
 
-    const animationDelay = 2;
-    const animationDuration = 7.5;
+    const animationDelay = isHome ? 2 : 0;
+    const animationDuration = isHome ? 7.5 : .1;
 
     // fade in dots
     const dotsSizeSrc = { value: 0 };

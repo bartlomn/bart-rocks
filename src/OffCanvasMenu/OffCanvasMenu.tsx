@@ -1,4 +1,5 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { CgMenu, CgClose } from 'react-icons/cg';
 
 import OffCanvasButton from './OffCanvasButton';
@@ -15,7 +16,7 @@ const OffCanvasMenu: FC<OCMenuProps> = () => {
     }, [isOpen]);
     const closeActionHandler = useCallback(() => {
         setIsOpen(false);
-    }, [])
+    }, []);
     useEffect(() => {
         const rootRef = document.querySelector('#root');
         if (isOpen) {
@@ -35,8 +36,14 @@ const OffCanvasMenu: FC<OCMenuProps> = () => {
             </OffCanvasButton>
 
             <ul className={styles.list}>
-                <li className={styles.listItem}>About</li>
-                <li className={styles.listItem}>Projects</li>
+                <li className={styles.listItem}>
+                    <NavLink exact to="/">Home</NavLink>
+                </li>
+                <li className={styles.listItem}>
+                    <NavLink to="/about">About</NavLink>
+                </li>
+                <li className={styles.listItem}>Services</li>
+                <li className={styles.listItem}>Case Studies</li>
                 <li className={styles.listItem}>Contact</li>
             </ul>
         </div>
