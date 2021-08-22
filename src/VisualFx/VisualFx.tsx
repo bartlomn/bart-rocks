@@ -66,7 +66,7 @@ const VisualFx: FC<VisualFxProps> = ({ loadComplete }): JSX.Element => {
         document.querySelector('#root')?.classList.add('loadComplete');
 
         // set up renderer
-        const textureFile = 'images/dotTexture.png';
+        const textureFile = '/images/nodeTexture.png';
         const canvas = canvasRef.current;
         if (!canvas) return;
         const width = canvas.offsetWidth;
