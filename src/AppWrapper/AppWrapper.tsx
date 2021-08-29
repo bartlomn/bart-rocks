@@ -7,12 +7,6 @@ import styles from './AppWrapper.module.scss';
 
 type AppWrapperProps = PropsWithChildren<Record<string, unknown>>;
 
-// type Attr = { name: string; value: string };
-// type LinkMeta = {
-//     tagName: keyof HTMLElementTagNameMap;
-//     attrs: Attr[];
-// };
-
 const fontsCss = `@font-face {
     font-family: cairo;
     src: url('/static/media/fonts/cairo/Cairo-Regular.ttf');
@@ -39,23 +33,6 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     }, []);
     const applyReadyState = useCallback(() => {
         const _apply = async () => {
-            // load the main css chunk
-            // if (process.env.NODE_ENV !== 'development') {
-            //     try {
-            //         const crititcalPathAssets = await fetch('crit_path_assets.json')
-            //             .then((res) => res.json())
-            //             .catch((reason) => console.error(reason));
-            //         crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
-            //             const linkTag = document.createElement(linkMeta.tagName);
-            //             linkMeta.attrs.forEach((attr) => {
-            //                 linkTag.setAttribute(attr.name, attr.value);
-            //             });
-            //             document.querySelector('head')?.appendChild(linkTag);
-            //         });
-            //     } catch (e) {
-            //         console.error(e);
-            //     }
-            // }
             // load fonts
             const fontsStyleTag = document.createElement('style');
             fontsStyleTag.appendChild(document.createTextNode(fontsCss));

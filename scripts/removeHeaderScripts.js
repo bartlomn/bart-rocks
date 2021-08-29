@@ -17,10 +17,6 @@ const removeHeaderScripts = async (pathname) => {
         pathname === '/'
             ? path.resolve(process.cwd(), 'build', 'index.html')
             : path.resolve(process.cwd(), 'build', pathname.replace('/', ''), 'index.html');
-    // const assetsFilePath =
-    //     pathname === '/'
-    //         ? path.resolve(process.cwd(), 'build', 'crit_path_assets.json')
-    //         : path.resolve(process.cwd(), 'build', pathname.replace('/', ''), 'crit_path_assets.json');
     const fileContents = await fs.readFile(htmlFilePath, 'utf-8');
     const document = parse(fileContents);
     const head = document.childNodes[1].childNodes[0];
@@ -37,20 +33,12 @@ const removeHeaderScripts = async (pathname) => {
     // to be able to do that, we'll save the meta to a file that we'll load at runtime
     // actually we're loading just the main css chunk
     before = head.childNodes.length;
-    // let removed = head.childNodes.filter((node) => styleLinkFilter(node) && node.attrs[0].value.indexOf('main') !== -1);
     head.childNodes = head.childNodes.filter((node) => !styleLinkFilter(node));
     after = head.childNodes.length;
-    // remove circular refs
-    // removed = removed.map((node) => {
-    //     delete node.parentNode;
-    //     return node;
-    // });
     console.info(`Removed ${before - after} styles from the <head> element.`);
     const revisedContents = serialize(document);
     await fs.writeFile(htmlFilePath, revisedContents, 'utf-8');
     console.info(`Saved ${htmlFilePath}`);
-    // await fs.writeFile(assetsFilePath, JSON.stringify(removed), 'utf-8');
-    // console.info(`Saved ${assetsFilePath}`);
 };
 
 (async () => {
