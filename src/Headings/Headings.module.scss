@@ -1,41 +1,15 @@
+@import './../styles/animations.scss';
 @import './../styles/breakpoints.scss';
 @import './../styles/layout.scss';
 @import './../styles/colors.scss';
+@import './../styles/common.scss';
 
-.base {
-    font-family: cairo;
-    padding: 0 $padding-global;
-    opacity: 0;
-    will-change: opacity, transform;
-
-    @include sm {
-        padding: 0 $padding-global-sm;
-    }
-    @include md {
-        padding: 0 $padding-global-md;
-    }
-    @include lg {
-        padding: 0 $padding-global-lg;
-    }
-    @include xl {
-        padding: 0 $padding-global-xl;
-    }
-}
 
 .h1 {
-    @extend .base;
-    display: inline-block;
-    font-weight: 900;
-    background: $fill-h1;
-    -webkit-text-fill-color: transparent;
-    background-clip: inherit;
-    -webkit-background-clip: text;
-    font-size: 2.5rem;
-    margin-bottom: $padding-global;
+    @extend .animationBase;
+    @extend .heading_1_base;
 
     @include md {
-        margin-top: 4rem;
-
         &::before {
             content: "Hi, I'm   ";
             width: 100vw;
@@ -52,75 +26,20 @@
         }
     }
 }
-.h2 {
-    @extend .base;
-    font-size: 1.5rem;
-    font-weight: 100;
-    max-width: 20rem;
-}
-.header {
-    @extend .base;
-    text-align: justify;
-    margin-bottom: 1.5rem;
 
-    @include md {
-        max-width: 35rem;
-    }
+.h2 {
+    @extend .animationBase;
+    @extend .heading_2_base;
+}
+
+.mainSection {
+    @extend .animationBase;
+    @extend .mainSection_base;
+
+    text-align: justify;
 }
 
 .hr {
-    color: $global-accent-color;
-    width: 5rem;
-    border-style: solid;
-    border-top: none;
-    margin-left: $padding-global;
-    margin-bottom: 1.5rem;
-    opacity: 0;
-    will-change: opacity, transform;
-
-    @include sm {
-        margin-left: $padding-global-sm;
-    }
-    @include md {
-        margin-left: $padding-global-md;
-    }
-    @include lg {
-        margin-left: $padding-global-lg;
-    }
-    @include xl {
-        margin-left: $padding-global-xl;
-    }
-}
-
-:global(.loadComplete) {
-    .base {
-        animation: headingAnimation;
-        animation-duration: 2s;
-        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-        animation-fill-mode: forwards;
-    }
-    .h2 {
-        animation-delay: 0.5s;
-    }
-    .header {
-        animation-delay: 1s;
-    }
-    .hr {
-        animation: headingAnimation;
-        animation-delay: 0.5s;
-        animation-duration: 2s;
-        animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-        animation-fill-mode: forwards;
-    }
-}
-
-@keyframes headingAnimation {
-    0% {
-        opacity: 0;
-        transform: translateY(-1rem) scale(1.1);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0rem) scale(1);
-    }
+    @extend .hr_base;
+    @extend .animationBase;
 }

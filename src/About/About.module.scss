@@ -1,0 +1,25 @@
+@import './../styles/animations.scss';
+@import './../styles/breakpoints.scss';
+@import './../styles/layout.scss';
+@import './../styles/colors.scss';
+@import './../styles/common.scss';
+
+.h1 {
+    @extend .animationBase;
+    @extend .heading_1_base;
+}
+
+.hr {
+    @extend .animationBase;
+    @extend .hr_base;
+}
+
+.h2 {
+    @extend .animationBase;
+    @extend .heading_2_base;
+}
+
+.mainSection {
+    @extend .animationBase;
+    @extend .mainSection_base;
+}

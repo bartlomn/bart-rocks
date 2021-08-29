@@ -1,0 +1,42 @@
+@import './breakpoints.scss';
+@import './layout.scss';
+@import './colors.scss';
+
+.heading_1_base {
+    display: inline-block;
+    font-weight: 900;
+    background: $fill-h1;
+    -webkit-text-fill-color: transparent;
+    background-clip: inherit;
+    -webkit-background-clip: text;
+    font-size: 2.5rem;
+    margin-bottom: $padding-global;
+
+    @include md {
+        margin-top: 4rem;
+    }
+}
+
+.heading_2_base {
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    font-weight: 100;
+    max-width: 20rem;
+}
+
+.hr_base {
+    color: $global-accent-color;
+    width: 5rem;
+    border-style: solid;
+    border-top: none;
+    margin-left: 0;
+    margin-bottom: 1.5rem;
+}
+
+.mainSection_base {
+    margin-bottom: 1.5rem;
+
+    @include md {
+        max-width: 35rem;
+    }
+}

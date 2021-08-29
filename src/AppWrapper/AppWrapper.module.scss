@@ -1,3 +1,7 @@
+@import './../styles/breakpoints.scss';
+@import './../styles/layout.scss';
+@import './../styles/colors.scss';
+
 .overlay {
     $dotSize: 1rem;
     will-change: opacity;
@@ -41,6 +45,27 @@
     }
 }
 
+.app {
+    position: absolute;
+    height: 100vh;
+    overflow: scroll;
+    font-family: cairo;
+    padding: 0 $padding-global;
+
+    @include sm {
+        padding: 0 $padding-global-sm;
+    }
+    @include md {
+        padding: 0 $padding-global-md;
+    }
+    @include lg {
+        padding: 0 $padding-global-lg;
+    }
+    @include xl {
+        padding: 0 $padding-global-xl;
+    }
+}
+
 .children {
     overflow: hidden;
     height: 100vh;
@@ -62,12 +87,6 @@
         will-change: opacity;
         transition: opacity 1s cubic-bezier(0.19, 1, 0.22, 1);
     }
-}
-
-.app {
-    position: absolute;
-    height: 100vh;
-    overflow: scroll;
 }
 
 :global(.menuVisible) {

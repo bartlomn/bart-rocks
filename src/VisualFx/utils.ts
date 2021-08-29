@@ -122,7 +122,7 @@ export const initRender = (
     performance.mark('scene:render:init');
     performance.measure('scene:processing', 'scene:deps:start', 'scene:render:init');
 
-    const animationDelay = isHome ? 2 : 0;
+    const animationDelay = isHome ? 1.75 : 0;
     const animationDuration = isHome ? 7.5 : .1;
 
     // fade in dots

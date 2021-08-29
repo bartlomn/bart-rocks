@@ -37,7 +37,9 @@ const OffCanvasMenu: FC<OCMenuProps> = () => {
 
             <ul className={styles.list}>
                 <li className={styles.listItem}>
-                    <NavLink exact to="/">Home</NavLink>
+                    <NavLink exact to="/">
+                        Home
+                    </NavLink>
                 </li>
                 <li className={styles.listItem}>
                     <NavLink to="/about">About</NavLink>
