@@ -40,16 +40,22 @@ const AppWrapper: FC<AppWrapperProps> = ({ children }) => {
     const applyReadyState = useCallback(() => {
         const _apply = async () => {
             // load the main css chunk
-            if (process.env.NODE_ENV !== 'development') {
-                const crititcalPathAssets = await fetch('/crit_path_assets.json').then((res) => res.json());
-                crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
-                    const linkTag = document.createElement(linkMeta.tagName);
-                    linkMeta.attrs.forEach((attr) => {
-                        linkTag.setAttribute(attr.name, attr.value);
-                    });
-                    document.querySelector('head')?.appendChild(linkTag);
-                });
-            }
+            // if (process.env.NODE_ENV !== 'development') {
+            //     try {
+            //         const crititcalPathAssets = await fetch('crit_path_assets.json')
+            //             .then((res) => res.json())
+            //             .catch((reason) => console.error(reason));
+            //         crititcalPathAssets.forEach((linkMeta: LinkMeta) => {
+            //             const linkTag = document.createElement(linkMeta.tagName);
+            //             linkMeta.attrs.forEach((attr) => {
+            //                 linkTag.setAttribute(attr.name, attr.value);
+            //             });
+            //             document.querySelector('head')?.appendChild(linkTag);
+            //         });
+            //     } catch (e) {
+            //         console.error(e);
+            //     }
+            // }
             // load fonts
             const fontsStyleTag = document.createElement('style');
             fontsStyleTag.appendChild(document.createTextNode(fontsCss));
