@@ -7,11 +7,11 @@ import styles from './AppWrapper.module.scss';
 
 type AppWrapperProps = PropsWithChildren<Record<string, unknown>>;
 
-type Attr = { name: string; value: string };
-type LinkMeta = {
-    tagName: keyof HTMLElementTagNameMap;
-    attrs: Attr[];
-};
+// type Attr = { name: string; value: string };
+// type LinkMeta = {
+//     tagName: keyof HTMLElementTagNameMap;
+//     attrs: Attr[];
+// };
 
 const fontsCss = `@font-face {
     font-family: cairo;
