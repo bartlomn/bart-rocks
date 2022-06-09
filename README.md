@@ -13,7 +13,7 @@ This is not an example of production-ready code. Though I may decide to put it o
 
 ### Locally
 
-Requires node@^14.15.0, yarn and a static server package, ie. `serve`
+Requires node@^12.18.0, yarn and a static server package, ie. `serve`
 After checking out go:
 
 ```bash
